@@ -3,7 +3,7 @@ import hitchpython
 from hitchstory import StoryCollection, StorySchema, BaseEngine, exceptions
 from hitchrun import expected
 from commandlib import Command
-from strictyaml import MapPattern, Str, Map, Int, Optional, load
+from strictyaml import Str, Map, Int, Optional, load
 from pathquery import pathq
 import hitchtest
 import hitchdoc
@@ -11,7 +11,6 @@ from hitchrun import hitch_maintenance
 from commandlib import python
 from hitchrun import DIR
 from hitchrun.decorators import ignore_ctrlc
-import requests
 
 
 from jinja2.environment import Environment
@@ -87,7 +86,6 @@ class Engine(BaseEngine):
         ExamplePythonCode(
             self.preconditions['code']
         ).with_setup_code(self.preconditions.get('setup', ''))\
-         .with_long_strings(yaml_snippet=self.preconditions.get('yaml_snippet'))\
          .expect_exception(exception_type, message)\
          .run(self.path.state, self.python)
 

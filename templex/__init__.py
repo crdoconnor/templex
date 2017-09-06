@@ -1,13 +1,7 @@
 from copy import copy
 from re import compile, escape
+from templex.exceptions import KeyNotFound, TemplexException
 
-
-class TemplexException(Exception):
-    pass
-
-
-class KeyNotFound(TemplexException):
-    pass
 
 
 def escape_to_regex(text):
@@ -38,14 +32,13 @@ class TemplexMatch(object):
 class Templex(object):
     def __init__(self, template):
         self._template = template
-        self._variables = None
+        self._variables = {}
     
     def with_vars(self, **variables):
         new_templex = copy(self)
         new_templex._variables = variables
         return new_templex
-    
-    
+
     def match(self, string):
         is_plain_text = True
         compiled_regex = r""
@@ -61,7 +54,11 @@ class Templex(object):
                         r"(?P<{0}>{1})".format(stripped_chunk, self._variables[stripped_chunk]),
                     )
                 else:
-                    raise KeyNotFound("'{0}' not found in keys")
+                    raise KeyNotFound(
+                        "'{0}' not found in variables. Specify with with_vars(var=regex).\n".format(
+                          stripped_chunk
+                        )
+                    )
             is_plain_text = not is_plain_text
 
         match_obj = compile(compiled_regex).match(string)
