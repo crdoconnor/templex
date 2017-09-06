@@ -64,5 +64,5 @@ class Templex(object):
                     raise KeyNotFound("'{0}' not found in keys")
             is_plain_text = not is_plain_text
 
-        variables = compile(compiled_regex).match(string).groupdict()
-        return TemplexMatch(**variables)
+        match_obj = compile(compiled_regex).match(string)
+        return TemplexMatch(**match_obj.groupdict()) if match_obj else None
