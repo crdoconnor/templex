@@ -77,6 +77,14 @@ class Engine(BaseEngine):
                 run(self.pip("uninstall", "templex", "-y").ignore_errors())
                 run(self.pip("install", ".").in_dir(self.path.project))
 
+    def run_code(self):
+        from hitchrunpy import ExamplePythonCode
+
+        ExamplePythonCode(
+            self.preconditions['code']
+        ).with_setup_code(self.preconditions.get('setup', ''))\
+         .run(self.path.state, self.python)
+
     def raises_exception(self, exception_type=None, message=None):
         """
         Expect an exception.

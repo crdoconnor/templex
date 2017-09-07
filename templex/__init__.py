@@ -38,6 +38,10 @@ class Templex(object):
         new_templex = copy(self)
         new_templex._variables = variables
         return new_templex
+    
+    def assert_match(self, string):
+        if self.match(string) is not None:
+            return
 
     def match(self, string):
         is_plain_text = True
