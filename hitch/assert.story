@@ -1,3 +1,14 @@
+Simple string matching:
+  based on: templex
+  preconditions:
+    setup: |
+      from templex import Templex
+    code: |
+      Templex("The price is £200").assert_match("The price is £200")
+  scenario:
+    - Run code
+
+
 Assert matching:
   based on: templex
   preconditions:
