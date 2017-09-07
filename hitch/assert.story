@@ -15,7 +15,13 @@ Assert matching:
     Assert fails:
       preconditions:
         code: |
-          templex.assert_match("The price is £")
+          templex.assert_match("My price is £200")
       scenario:
         - Raises exception:
             exception type: templex.exceptions.NonMatching
+            message: |
+              ACTUAL:
+              My price is £200
+
+              EXPECTED:
+              The price is £{{ cost }}

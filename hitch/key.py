@@ -94,7 +94,7 @@ class Engine(BaseEngine):
         ExamplePythonCode(
             self.preconditions['code']
         ).with_setup_code(self.preconditions.get('setup', ''))\
-         .expect_exception(exception_type, message)\
+         .expect_exception(exception_type, message.rstrip())\
          .run(self.path.state, self.python)
 
         """

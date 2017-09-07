@@ -41,12 +41,21 @@ class Templex(object):
         return new_templex
 
     def assert_match(self, string):
+        """
+        Raises informative exception when string does not match the templex.
+        """
         if self.match(string) is not None:
             return
         else:
-            raise NonMatching()
+            raise NonMatching(
+                string,
+                self._template,
+            )
 
     def match(self, string):
+        """
+        Returns TemplexMatch object if there is a match or None if there isn't.
+        """
         is_plain_text = True
         compiled_regex = r""
 
@@ -62,7 +71,7 @@ class Templex(object):
                     )
                 else:
                     raise KeyNotFound(
-                        "'{0}' not found in variables. Specify with with_vars(var=regex).\n".format(
+                        "'{0}' not found in variables. Specify with with_vars(var=regex).".format(
                           stripped_chunk
                         )
                     )
