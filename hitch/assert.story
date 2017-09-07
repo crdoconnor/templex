@@ -25,3 +25,8 @@ Assert matching:
 
               EXPECTED:
               The price is £{{ cost }}
+
+              DIFF:
+              - My price is £200? ^^
+              + The price is £200? ^^^
+

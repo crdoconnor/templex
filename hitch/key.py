@@ -90,11 +90,10 @@ class Engine(BaseEngine):
         Expect an exception.
         """
         from hitchrunpy import ExamplePythonCode
-
         ExamplePythonCode(
             self.preconditions['code']
         ).with_setup_code(self.preconditions.get('setup', ''))\
-         .expect_exception(exception_type, message.rstrip())\
+         .expect_exception(exception_type, message)\
          .run(self.path.state, self.python)
 
         """
@@ -217,10 +216,10 @@ def regression():
     """
     Run regression testing - lint and then run all tests.
     """
-    lint()
     print(
         _storybook({}).ordered_by_name().play().report()
     )
+    lint()
 
 
 def lint():

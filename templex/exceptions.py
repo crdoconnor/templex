@@ -17,12 +17,14 @@ class KeyNotFound(TemplexException):
 
 
 class NonMatching(TemplexException):
-    def __init__(self, actual, template):
+    def __init__(self, actual, template, diff):
         self.actual = actual
         self.template = template
+        self.diff = diff
 
     def __unicode__(self):
-        return u"ACTUAL:\n{0}\n\nEXPECTED:\n{1}".format(
+        return u"ACTUAL:\n{0}\n\nEXPECTED:\n{1}\n\nDIFF:\n{2}".format(
             self.actual.decode('utf8'),
             self.template.decode('utf8'),
+            self.diff.decode('utf8'),
         )

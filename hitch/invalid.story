@@ -10,7 +10,7 @@ No matching variables:
   scenario:
     - Raises exception:
         exception type: templex.exceptions.KeyNotFound
-        message: |
+        message: |-
           'cost' not found in variables. Specify with with_vars(var=regex).
 
 #Duplicate variables
