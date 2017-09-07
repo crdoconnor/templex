@@ -1,6 +1,6 @@
 from copy import copy
 from re import compile, escape
-from templex.exceptions import KeyNotFound, TemplexException
+from templex.exceptions import KeyNotFound, NonMatching
 
 
 
@@ -42,6 +42,8 @@ class Templex(object):
     def assert_match(self, string):
         if self.match(string) is not None:
             return
+        else:
+            raise NonMatching()
 
     def match(self, string):
         is_plain_text = True

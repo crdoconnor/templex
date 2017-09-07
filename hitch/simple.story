@@ -46,13 +46,16 @@ Assert matching:
       
       templex = Templex("The price is £{{ cost }}").with_vars(cost=r"[0-9]+")
     code: |
-      templex.assert_match("The price is £{{ cost }}.")
+      templex.assert_match("The price is £200")
   variations:
     Assert works:
       scenario:
         - Run code
     
-    #Assert fails:
-      #code: |
-        #templex.assert_match("The price is £{{ cost }}")
-      #scenario:
+    Assert fails:
+      preconditions:
+        code: |
+          templex.assert_match("The price is £{{ cost }}")
+      scenario:
+        - Raises exception:
+            exception type: templex.exceptions.NonMatching

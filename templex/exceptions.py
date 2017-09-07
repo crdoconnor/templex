@@ -4,3 +4,7 @@ class TemplexException(Exception):
 
 class KeyNotFound(TemplexException):
     pass
+
+
+class NonMatching(TemplexException):
+    pass
