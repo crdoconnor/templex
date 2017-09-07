@@ -71,7 +71,7 @@ class Templex(object):
                         list_of_chunks.append(
                             r"(?P<{0}>{1})".format(stripped_chunk, self._variables[stripped_chunk])
                         )
-                        list_of_unescaped_chunks.append("{{ {0} }}".format(stripped_chunk))
+                        list_of_unescaped_chunks.append(r"{{ " + stripped_chunk + r" }}")
                     else:
                         raise KeyNotFound((
                             "'{0}' not found in variables. "
