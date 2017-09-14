@@ -3,7 +3,7 @@ import hitchpython
 from hitchstory import StoryCollection, StorySchema, BaseEngine, exceptions
 from hitchrun import expected
 from commandlib import Command
-from strictyaml import Str, Map, Int, Optional, load
+from strictyaml import Str, Map, Int, Optional
 from pathquery import pathq
 import hitchtest
 import hitchdoc
@@ -11,10 +11,6 @@ from hitchrun import hitch_maintenance
 from commandlib import python
 from hitchrun import DIR
 from hitchrun.decorators import ignore_ctrlc
-
-
-from jinja2.environment import Environment
-from jinja2 import DictLoader
 
 
 class Engine(BaseEngine):
@@ -96,95 +92,18 @@ class Engine(BaseEngine):
          .expect_exception(exception_type, message)\
          .run(self.path.state, self.python)
 
-        """
-        class ExpectedExceptionDidNotHappen(Exception):
-            pass
-
-        error_path = self.path.state.joinpath("error.txt")
-        runpy = self.path.gen.joinpath("runmypy.py")
-        if error_path.exists():
-            error_path.remove()
-        env = Environment()
-        env.loader = DictLoader(
-            load(self.path.key.joinpath("codetemplates.yml").bytes().decode('utf8')).data
-        )
-        runpy.write_text(env.get_template("raises_exception").render(
-            setup=self.preconditions['setup'],
-            code=self.preconditions['code'],
-            variables=self.preconditions.get('variables', None),
-            yaml_snippet=self.preconditions.get("yaml_snippet"),
-            modified_yaml_snippet=self.preconditions.get("modified_yaml_snippet"),
-            exception=exception,
-            error_path=error_path,
-        ))
-        self.python(runpy).run()
-        if not error_path.exists():
-            raise ExpectedExceptionDidNotHappen()
-        else:
-            import difflib
-            actual_error = error_path.bytes().decode('utf8')
-            if not exception.strip() in actual_error:
-                raise Exception(
-                    "actual:\n{0}\nexpected:\n{1}\ndiff:\n{2}".format(
-                        actual_error,
-                        exception,
-                        ''.join(difflib.context_diff(exception, actual_error)),
-                    )
-                )
-        """
-
-    def should_be_equal_to(self, rhs):
-        """
-        Code should be equal to rhs
-        """
-        class UnexpectedException(Exception):
-            pass
-
-        error_path = self.path.gen.joinpath("error.txt")
-        runpy = self.path.gen.joinpath("runmypy.py")
-        if error_path.exists():
-            error_path.remove()
-        env = Environment()
-        env.loader = DictLoader(
-            load(self.path.key.joinpath("codetemplates.yml").bytes().decode('utf8')).data
-        )
-        runpy.write_text(env.get_template("shouldbeequal").render(
-            setup=self.preconditions['setup'],
-            code=self.preconditions['code'],
-            variables=self.preconditions.get('variables', None),
-            yaml_snippet=self.preconditions.get("yaml_snippet"),
-            modified_yaml_snippet=self.preconditions.get("modified_yaml_snippet"),
-            rhs=rhs,
-            error_path=error_path,
-        ))
-        self.python(runpy).run()
-        if error_path.exists():
-            raise UnexpectedException(error_path.bytes().decode("utf8"))
-
     def on_failure(self, result):
         if self.settings.get("pause_on_failure", True):
             if self.preconditions.get("launch_shell", False):
                 self.services.log(message=self.stacktrace.to_template())
 
     def pause(self, message="Pause"):
-        if hasattr(self, 'services'):
-            self.services.start_interactive_mode()
         import IPython
         IPython.embed()
-        if hasattr(self, 'services'):
-            self.services.stop_interactive_mode()
 
     def on_success(self):
         if self.settings.get("overwrite"):
             self.new_story.save()
-
-    def tear_down(self):
-        try:
-            self.shutdown_connection()
-        except:
-            pass
-        if hasattr(self, 'services'):
-            self.services.shutdown()
 
 
 def _storybook(settings):
