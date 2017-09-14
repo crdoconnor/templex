@@ -11,6 +11,7 @@ from hitchrun import hitch_maintenance
 from commandlib import python
 from hitchrun import DIR
 from hitchrun.decorators import ignore_ctrlc
+from hitchrunpy import ExamplePythonCode
 
 
 class Engine(BaseEngine):
@@ -74,8 +75,6 @@ class Engine(BaseEngine):
                 run(self.pip("install", ".").in_dir(self.path.project))
 
     def run_code(self):
-        from hitchrunpy import ExamplePythonCode
-
         ExamplePythonCode(
             self.preconditions['code']
         ).with_setup_code(self.preconditions.get('setup', ''))\
@@ -85,17 +84,19 @@ class Engine(BaseEngine):
         """
         Expect an exception.
         """
-        from hitchrunpy import ExamplePythonCode
-        ExamplePythonCode(
+        result = ExamplePythonCode(
             self.preconditions['code']
         ).with_setup_code(self.preconditions.get('setup', ''))\
-         .expect_exception(exception_type, message)\
+         .expect_exceptions()\
          .run(self.path.state, self.python)
 
-    def on_failure(self, result):
-        if self.settings.get("pause_on_failure", True):
-            if self.preconditions.get("launch_shell", False):
-                self.services.log(message=self.stacktrace.to_template())
+        result.exception_was_raised(exception_type, message)
+
+    def should_be_equal_to(self, rhs):
+        ExamplePythonCode(
+            self.preconditions.get('setup', '')
+        ).is_equal(self.preconditions['code'], rhs)\
+         .run(self.path.state, self.python)
 
     def pause(self, message="Pause"):
         import IPython
