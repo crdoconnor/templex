@@ -1,4 +1,4 @@
-from commandlib import run
+from commandlib import run, CommandError
 import hitchpython
 from hitchstory import StoryCollection, StorySchema, BaseEngine, HitchStoryException
 from hitchrun import expected
@@ -139,9 +139,10 @@ def regression():
     print(
         _storybook({}).ordered_by_name().play().report()
     )
-    #lint()
+    lint()
 
 
+@expected(CommandError)
 def lint():
     """
     Lint all code.
@@ -223,6 +224,8 @@ def docgen():
         )
 
 
+@expected(CommandError)
+@ignore_ctrlc
 def rerun(version="2.7.10"):
     """
     Rerun last example code block with specified version of python.

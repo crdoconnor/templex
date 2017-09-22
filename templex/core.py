@@ -72,13 +72,13 @@ class Templex(object):
                 else:
                     stripped_chunk = chunk.strip()
                     if stripped_chunk in self._variables.keys():
-                        compiled_regex = ur"{0}{1}".format(
+                        compiled_regex = unicode(r"{0}{1}".format(
                             compiled_regex,
-                            ur"(?P<{0}>{1})".format(
+                            unicode(r"(?P<{0}>{1})".format(
                                 stripped_chunk,
                                 self._variables[stripped_chunk],
-                            ),
-                        )
+                            )),
+                        ))
                         list_of_chunks.append(
                             r"(?P<{0}>{1})".format(stripped_chunk, self._variables[stripped_chunk])
                         )
@@ -130,10 +130,13 @@ class Templex(object):
             else:
                 stripped_chunk = chunk.strip()
                 if stripped_chunk in self._variables.keys():
-                    compiled_regex = ur"{0}{1}".format(
+                    compiled_regex = unicode(r"{0}{1}".format(
                         compiled_regex,
-                        ur"(?P<{0}>{1})".format(stripped_chunk, self._variables[stripped_chunk]),
-                    )
+                        unicode(r"(?P<{0}>{1})".format(
+                            stripped_chunk,
+                            self._variables[stripped_chunk]
+                        )),
+                    ))
                 else:
                     raise KeyNotFound(
                         "'{0}' not found in variables. Specify with with_vars(var=regex).".format(
