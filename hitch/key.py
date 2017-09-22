@@ -1,6 +1,6 @@
 from commandlib import run
 import hitchpython
-from hitchstory import StoryCollection, StorySchema, BaseEngine, exceptions
+from hitchstory import StoryCollection, StorySchema, BaseEngine, HitchStoryException
 from hitchrun import expected
 from commandlib import Command
 from strictyaml import Str, Map, Int, Optional
@@ -111,7 +111,7 @@ def _storybook(settings):
     return StoryCollection(pathq(DIR.key).ext("story"), Engine(DIR, settings))
 
 
-@expected(exceptions.HitchStoryException)
+@expected(HitchStoryException)
 def tdd(*words):
     """
     Run all tests
@@ -121,7 +121,7 @@ def tdd(*words):
     )
 
 
-@expected(exceptions.HitchStoryException)
+@expected(HitchStoryException)
 def testfile(filename):
     """
     Run all stories in filename 'filename'.
@@ -131,7 +131,7 @@ def testfile(filename):
     )
 
 
-@expected(exceptions.HitchStoryException)
+@expected(HitchStoryException)
 def regression():
     """
     Run regression testing - lint and then run all tests.
