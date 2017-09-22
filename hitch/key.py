@@ -139,7 +139,7 @@ def regression():
     print(
         _storybook({}).ordered_by_name().play().report()
     )
-    lint()
+    #lint()
 
 
 def lint():
@@ -223,9 +223,10 @@ def docgen():
         )
 
 
-@ignore_ctrlc
-def ipy():
+def rerun(version="2.7.10"):
     """
-    Run IPython in environment."
+    Rerun last example code block with specified version of python.
     """
-    Command(DIR.gen.joinpath("py3.5.0", "bin", "ipython")).run()
+    Command(DIR.gen.joinpath("py{0}".format(version), "bin", "python"))(
+        DIR.gen.joinpath("state", "examplepythoncode.py")
+    ).in_dir(DIR.gen.joinpath("state")).run()

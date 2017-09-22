@@ -4,7 +4,7 @@ Simple string matching:
     setup: |
       from templex import Templex
     code: |
-      Templex("The price is £200").assert_match("The price is £200")
+      Templex(u"The price is £200").assert_match(u"The price is £200")
   scenario:
     - Run code
 
@@ -15,19 +15,19 @@ Assert matching:
     setup: |
       from templex import Templex
       
-      templex = Templex("The price is £{{ cost }}").with_vars(cost=r"[0-9]+")
+      templex = Templex(u"The price is £{{ cost }}").with_vars(cost=r"[0-9]+")
   variations:
     Assert works:
       preconditions:
         code: |
-          templex.assert_match("The price is £200")
+          templex.assert_match(u"The price is £200")
       scenario:
         - Run code
     
     Assert fails different text:
       preconditions:
         code: |
-          templex.assert_match("My price is £200")
+          templex.assert_match(u"My price is £200")
       scenario:
         - Raises exception:
             exception type: templex.exceptions.NonMatching
@@ -45,7 +45,7 @@ Assert matching:
     Assert fails invalid regex:
       preconditions:
         code: |
-          templex.assert_match("The price is £xxx")
+          templex.assert_match(u"The price is £xxx")
       scenario:
         - Raises exception:
             exception type: templex.exceptions.NonMatching

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class TemplexException(Exception):
     def __init__(self, message):
         self.message = message
@@ -24,7 +25,14 @@ class NonMatching(TemplexException):
 
     def __unicode__(self):
         return u"ACTUAL:\n{0}\n\nEXPECTED:\n{1}\n\nDIFF:\n{2}".format(
-            self.actual.decode('utf8'),
-            self.template.decode('utf8'),
-            self.diff.decode('utf8'),
+            self.actual,
+            self.template,
+            self.diff,
         )
+
+
+class MustUseString(TemplexException):
+    """
+    Must use string with templex (e.g. not bytes).
+    """
+    pass

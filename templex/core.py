@@ -1,11 +1,17 @@
+# -*- coding: utf-8 -*-
 from copy import copy
 from re import compile, escape
-from templex.exceptions import KeyNotFound, NonMatching
+from templex.exceptions import KeyNotFound, NonMatching, MustUseString
 import difflib
+import sys
+
+
+if sys.version_info[0] == 3:
+    unicode = str
 
 
 def escape_to_regex(text):
-    escaped = ""
+    escaped = r""
     for character in text:
         if character == r" ":
             escaped += r" "
@@ -33,10 +39,15 @@ class TemplexMatch(object):
 
 class Templex(object):
     def __init__(self, template):
+        if not isinstance(template, (unicode, str)) or isinstance(template, bytes):
+            raise MustUseString("Must use string with templex (e.g. not bytes).")
         self._template = template
         self._variables = {}
 
     def with_vars(self, **variables):
+        for name, variable in variables.items():
+            if not isinstance(variable, (unicode, str)):
+                raise MustUseString("Must use string with templex (e.g. not bytes).")
         new_templex = copy(self)
         new_templex._variables = variables
         return new_templex
@@ -61,9 +72,9 @@ class Templex(object):
                 else:
                     stripped_chunk = chunk.strip()
                     if stripped_chunk in self._variables.keys():
-                        compiled_regex = r"{0}{1}".format(
+                        compiled_regex = ur"{0}{1}".format(
                             compiled_regex,
-                            r"(?P<{0}>{1})".format(
+                            ur"(?P<{0}>{1})".format(
                                 stripped_chunk,
                                 self._variables[stripped_chunk],
                             ),
@@ -107,6 +118,9 @@ class Templex(object):
         """
         Returns TemplexMatch object if there is a match or None if there isn't.
         """
+        if not isinstance(string, (unicode, str)) or isinstance(string, bytes):
+            raise MustUseString("Must use string with templex (e.g. not bytes).")
+
         is_plain_text = True
         compiled_regex = r""
 
@@ -116,9 +130,9 @@ class Templex(object):
             else:
                 stripped_chunk = chunk.strip()
                 if stripped_chunk in self._variables.keys():
-                    compiled_regex = r"{0}{1}".format(
+                    compiled_regex = ur"{0}{1}".format(
                         compiled_regex,
-                        r"(?P<{0}>{1})".format(stripped_chunk, self._variables[stripped_chunk]),
+                        ur"(?P<{0}>{1})".format(stripped_chunk, self._variables[stripped_chunk]),
                     )
                 else:
                     raise KeyNotFound(
