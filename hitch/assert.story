@@ -15,87 +15,87 @@ Assert matching:
     setup: |
       from templex import Templex
       
-      templex = Templex(u"The price is £{{ cost }}").with_vars(cost=r"[0-9]+")
+      templex = Templex(u"My price is £{{ cost }}").with_vars(cost=r"[0-9]+")
   variations:
     Assert works:
       preconditions:
         code: |
-          templex.assert_match(u"The price is £200")
+          templex.assert_match(u"My price is £200")
       scenario:
         - Run code
     
     Assert fails different text py2:
       preconditions:
         code: |
-          templex.assert_match(u"My price is £200")
+          templex.assert_match(u"My price is £200.")
         python version: 2.7.10
       scenario:
         - Raises exception:
             exception type: exceptions.AssertionError
-            message: |
+            message: |-
               ACTUAL:
-              My price is £200
+              My price is £200.
 
               EXPECTED:
-              The price is £{{ cost }}
+              My price is £{{ cost }}
 
               DIFF:
-              - My price is £200? ^^
-              + The price is £200? ^^^
+              - My price is £200.?                 -
+              + My price is £200
 
               
     Assert fails different text py3:
       preconditions:
         code: |
-          templex.assert_match(u"My price is £200")
+          templex.assert_match(u"My price is £200.")
         python version: 3.5.0
       scenario:
         - Raises exception:
             exception type: builtins.AssertionError
-            message: |
+            message: |-
               ACTUAL:
-              My price is £200
+              My price is £200.
 
               EXPECTED:
-              The price is £{{ cost }}
+              My price is £{{ cost }}
 
               DIFF:
-              - My price is £200? ^^
-              + The price is £200? ^^^
+              - My price is £200.?                 -
+              + My price is £200
               
     Assert fails invalid regex py2:
       preconditions:
         code: |
-          templex.assert_match(u"The price is £xxx")
+          templex.assert_match(u"My price is £xxx")
         python version: 2.7.10
       scenario:
         - Raises exception:
             exception type: exceptions.AssertionError
             message: |-
               ACTUAL:
-              The price is £xxx
+              My price is £xxx
 
               EXPECTED:
-              The price is £{{ cost }}
+              My price is £{{ cost }}
 
               DIFF:
-              - The price is £xxx+ The price is £{{ cost }}
+              - My price is £xxx+ My price is £{{ cost }}
 
               
     Assert fails invalid regex py3:
       preconditions:
         code: |
-          templex.assert_match(u"The price is £xxx")
+          templex.assert_match(u"My price is £xxx")
         python version: 3.5.0
       scenario:
         - Raises exception:
             exception type: builtins.AssertionError
             message: |-
               ACTUAL:
-              The price is £xxx
+              My price is £xxx
 
               EXPECTED:
-              The price is £{{ cost }}
+              My price is £{{ cost }}
 
               DIFF:
-              - The price is £xxx+ The price is £{{ cost }}
+              - My price is £xxx+ My price is £{{ cost }}

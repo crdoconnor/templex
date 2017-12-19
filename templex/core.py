@@ -17,10 +17,6 @@ def escape_to_regex(text):
             escaped += r" "
         else:
             escaped += escape(character)
-    """
-    if flexible_whitespace:
-        escaped = sub("\s+", "\s+", escaped)
-    """
     return escaped
 
 
@@ -97,7 +93,7 @@ class Templex(object):
             for chunk, unescaped_chunk in zip(list_of_chunks, list_of_unescaped_chunks):
                 match = compile(chunk).search(string)
                 if match is not None:
-                    to_diff += to_compare[match.start():match.end()]
+                    to_diff += to_compare[0:match.end() - match.start()]
                     to_compare = to_compare[match.end():]
                 else:
                     to_diff += unescaped_chunk
@@ -123,7 +119,7 @@ class Templex(object):
             raise MustUseString("Must use string with templex (e.g. not bytes).")
 
         is_plain_text = True
-        compiled_regex = r""
+        compiled_regex = r"^"
 
         for chunk in DELIMETER_REGEX.split(self._template):
             if is_plain_text:
@@ -145,5 +141,6 @@ class Templex(object):
                     )
             is_plain_text = not is_plain_text
 
+        compiled_regex = compiled_regex + r"$"
         match_obj = compile(compiled_regex).match(string)
         return TemplexMatch(**match_obj.groupdict()) if match_obj else None
