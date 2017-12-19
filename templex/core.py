@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from copy import copy
 from re import compile, escape
-from templex.exceptions import KeyNotFound, NonMatching, MustUseString
+from templex.exceptions import KeyNotFound, MustUseString
 import difflib
 import sys
 
@@ -107,10 +107,12 @@ class Templex(object):
                 to_diff.splitlines(1)
             ))
 
-            raise NonMatching(
-                string,
-                self._template,
-                diff,
+            raise AssertionError(
+                u"ACTUAL:\n{0}\n\nEXPECTED:\n{1}\n\nDIFF:\n{2}".format(
+                    string,
+                    self._template,
+                    diff,
+                )
             )
 
     def match(self, string):

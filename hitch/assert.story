@@ -24,13 +24,14 @@ Assert matching:
       scenario:
         - Run code
     
-    Assert fails different text:
+    Assert fails different text py2:
       preconditions:
         code: |
           templex.assert_match(u"My price is £200")
+        python version: 2.7.10
       scenario:
         - Raises exception:
-            exception type: templex.exceptions.NonMatching
+            exception type: exceptions.AssertionError
             message: |
               ACTUAL:
               My price is £200
@@ -42,13 +43,34 @@ Assert matching:
               - My price is £200? ^^
               + The price is £200? ^^^
 
-    Assert fails invalid regex:
+              
+    Assert fails different text py3:
+      preconditions:
+        code: |
+          templex.assert_match(u"My price is £200")
+        python version: 3.5.0
+      scenario:
+        - Raises exception:
+            exception type: builtins.AssertionError
+            message: |
+              ACTUAL:
+              My price is £200
+
+              EXPECTED:
+              The price is £{{ cost }}
+
+              DIFF:
+              - My price is £200? ^^
+              + The price is £200? ^^^
+              
+    Assert fails invalid regex py2:
       preconditions:
         code: |
           templex.assert_match(u"The price is £xxx")
+        python version: 2.7.10
       scenario:
         - Raises exception:
-            exception type: templex.exceptions.NonMatching
+            exception type: exceptions.AssertionError
             message: |-
               ACTUAL:
               The price is £xxx
@@ -59,3 +81,21 @@ Assert matching:
               DIFF:
               - The price is £xxx+ The price is £{{ cost }}
 
+              
+    Assert fails invalid regex py3:
+      preconditions:
+        code: |
+          templex.assert_match(u"The price is £xxx")
+        python version: 3.5.0
+      scenario:
+        - Raises exception:
+            exception type: builtins.AssertionError
+            message: |-
+              ACTUAL:
+              The price is £xxx
+
+              EXPECTED:
+              The price is £{{ cost }}
+
+              DIFF:
+              - The price is £xxx+ The price is £{{ cost }}

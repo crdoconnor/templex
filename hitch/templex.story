@@ -2,4 +2,4 @@ templex:
   preconditions:
     python version: (( python version ))
   params:
-    python version: 2.7.10
+    python version: 3.5.0
