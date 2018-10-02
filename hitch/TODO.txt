@@ -1,31 +1,4 @@
-Reorganize doc generation so that scalar validators, non-scalar validators are treated separately.
-Handle updating YAML objects with new data.
-Version YAML docs with readthedocs.
-Move explanatory docs to readthedocs with links from FAQ, README.rst, etc.
-Add section on jsonschema + yaml
-Add section on kwalify + yaml
-Add section on schema + yaml
-
-* Something like MapPattern, but with just one key.
-
-validate validator objects.
-
-https://stackoverflow.com/questions/26434053/cargo-toml-for-lib
-
-for why not TOML
-
-Add scalar types
-
-* AbsoluteUrl(), RelativeUrl(), Url()
-* Bool should handle y and n
-* Unix timestamp
-* Domain
-* CaseInsensitiveEnum
-* PositiveInt
-* Base64
-* UNIX path
-* Templex
-
-Add kwalify parsing.
-
-Refactor so that custom scalar validators can be written.
+- Templex (e.g. bytes) use type() and use that to show what type x is.
+- Templex get diff object - with string1, string2, diff and explanation.
+- assert_match include what_is_this.
+- Templex explain unexpected diffs that look very similar - trailing whitespace, etc.
