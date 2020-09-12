@@ -25,3 +25,10 @@ def bdd(*keywords):
 def regression():
     """Run all stories."""
     toolkit.regression(Engine(toolkit.build))
+
+def deploy(version):
+    """
+    Deploy to pypi as specified version.
+    """
+    toolkit.deploy(version)
+
