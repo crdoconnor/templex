@@ -32,10 +32,12 @@ Values must be strings:
     Normal Match:
       given:
         setup: |
+          from templex import Templex
           Templex(u"The price is £200").match(u"The price is £200".encode('utf8'))
 
     Assert match:
       given:
         setup: |
+          from templex import Templex
           Templex(u"The price is £200").assert_match(u"The price is £200".encode('utf8'))
           

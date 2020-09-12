@@ -26,7 +26,7 @@ Assert matching:
         - Run:
             code: templex.assert_match(u"My price is £200.")
             raises:
-              type: exceptions.AssertionError
+              type: builtins.AssertionError
               message: |-
                 ACTUAL:
                 My price is £200.
@@ -67,7 +67,7 @@ Assert matching:
             code: |
               templex.assert_match(u"My price is £xxx")
             raises:
-              type: exceptions.AssertionError
+              type: builtins.AssertionError
               message: |-
                 ACTUAL:
                 My price is £xxx

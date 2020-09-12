@@ -24,5 +24,4 @@ def bdd(*keywords):
 @expected(HitchStoryException)
 def regression():
     """Run all stories."""
-    clean()
     toolkit.regression(Engine(toolkit.build))

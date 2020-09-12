@@ -5,7 +5,11 @@ import hitchpylibrarytoolkit
 
 class Engine(hitchpylibrarytoolkit.Engine):
     info_definition = InfoDefinition()
-        
+
+    def assert_text(self, will_output, actual_output):
+        assert will_output == actual_output, \
+            "GOT:\n{}\n\nEXPECTED:\n{}\n".format(will_output, actual_output)
+
     def set_up(self):
         self._build.ensure_built()
 
